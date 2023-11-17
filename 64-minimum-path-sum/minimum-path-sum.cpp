@@ -29,7 +29,7 @@ public:
     }
 
     //Tabulation
-    int tabulation(int i, int j, vector<vector<int>>& grid){
+    int tabulation(vector<vector<int>>& grid){
         vector<vector<int>> dp(grid.size(), vector<int>(grid[0].size(), 0));
         dp[0][0]=grid[0][0];
 
@@ -47,12 +47,42 @@ public:
         }
         return dp[grid.size()-1][grid[0].size()-1];
     }
+
+    //Space Optimization
+
+    int SpaceOpti(vector<vector<int>>& grid){
+        int n=grid.size();
+        int m=grid[0].size();
+        vector<int > prev(m, 0);
+
+        for(int i=0;i<n;i++){
+            vector<int> temp(m, 90000000);
+            for(int j=0;j<m;j++){
+                if(i==0 && j==0){
+                    temp[j]=grid[0][0];
+                    continue;
+                }
+                int up=grid[i][j];
+                int left=grid[i][j];
+
+                up+=i>0 ? prev[j]: 9000000;
+                left+=j>0 ? temp[j-1]: 9000000;
+
+                temp[j]=min(up, left);
+            }
+            prev=temp;
+        }
+        return prev[m-1];
+    }
+
     int minPathSum(vector<vector<int>>& grid) {
         // return f(grid.size()-1, grid[0].size()-1, grid);
         
         // vector<vector<int>> dp(grid.size(), vector<int>(grid[0].size(), -1));
         // return RecwithMemo(grid.size()-1, grid[0].size()-1, grid, dp);
 
-        return tabulation(grid.size()-1, grid[0].size()-1, grid);
+        // return tabulation(grid);
+
+        return SpaceOpti(grid);
     }
 };
