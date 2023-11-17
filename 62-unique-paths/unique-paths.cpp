@@ -46,16 +46,39 @@ public:
             }
         }
         return dp[m-1][n-1];
+    }
 
+    //space optimization
+
+    int spaceOpti(int m, int n){
+        vector<int> prev(n, 0);
+        for(int i=0;i<m;i++){
+            vector<int> temp(n, 0);
+            for(int j=0;j<n;j++){
+                if(i==0 && j==0){
+                    temp[j]=1;
+                    continue;
+                } 
+                if(j==0){
+                    temp[j]=prev[j];
+                }
+                else
+                temp[j]=prev[j]+temp[j-1];
+            }
+            prev=temp;
+        }
+        return prev[n-1];
     }
 
 
     int uniquePaths(int m, int n) {
         vector<vector<int>> dp(m, vector<int>(n, -1));
-        //    return f(m-1, n-1);
+        // return f(m-1, n-1);
     
         // return f(m-1, n-1, dp);
 
-        return tabulation(m, n);
+        // return tabulation(m, n);
+
+        return spaceOpti(m, n);
     }
 };
