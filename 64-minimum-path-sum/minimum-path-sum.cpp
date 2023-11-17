@@ -27,10 +27,32 @@ public:
 
         return dp[i][j]=min(up, left);
     }
+
+    //Tabulation
+    int tabulation(int i, int j, vector<vector<int>>& grid){
+        vector<vector<int>> dp(grid.size(), vector<int>(grid[0].size(), 0));
+        dp[0][0]=grid[0][0];
+
+        for(int i=0;i<grid.size();i++){
+            for(int j=0;j<grid[0].size();j++){
+                if(i==0 && j==0) continue;
+                int up=grid[i][j];
+                int left=grid[i][j];
+
+                up+=i>0? dp[i-1][j] : 9000000;
+                left+=j>0? dp[i][j-1] : 9000000;
+
+                dp[i][j]=min(up, left);
+            }
+        }
+        return dp[grid.size()-1][grid[0].size()-1];
+    }
     int minPathSum(vector<vector<int>>& grid) {
         // return f(grid.size()-1, grid[0].size()-1, grid);
         
-        vector<vector<int>> dp(grid.size(), vector<int>(grid[0].size(), -1));
-        return RecwithMemo(grid.size()-1, grid[0].size()-1, grid, dp);
+        // vector<vector<int>> dp(grid.size(), vector<int>(grid[0].size(), -1));
+        // return RecwithMemo(grid.size()-1, grid[0].size()-1, grid, dp);
+
+        return tabulation(grid.size()-1, grid[0].size()-1, grid);
     }
 };
