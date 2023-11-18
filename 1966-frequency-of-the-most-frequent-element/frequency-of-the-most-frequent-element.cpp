@@ -1,5 +1,8 @@
 class Solution {
 public:
+    // using sliding window technique
+    // for (e.g.)=> [1, 4, 8, 13], k=5
+    // output=> 2
     int maxFrequency(vector<int>& nums, int k) {
         sort(nums.begin(), nums.end());
         int left=0;
