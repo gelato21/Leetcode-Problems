@@ -50,9 +50,39 @@ public:
             }
         }
         return dp;
-
-
     }
+
+    //Space Optimization
+
+    int sapceOpti(vector<vector<int>>& matrix){
+        int n=matrix.size();
+
+        vector<int> prev;
+        prev=matrix[n-1];
+
+        for(int i=n-2;i>=0;i--){
+            vector<int > temp(n);
+            for(int j=0;j<n;j++){
+                int down=1e9, left=1e9, right=1e9;
+                down=prev[j];
+                if(j-1>=0){
+                    left=prev[j-1];
+                }
+                if(j+1<n){
+                    right=prev[j+1];
+                }
+
+                temp[j]=matrix[i][j]+min(down, min(right, left));
+            }
+            prev=temp;
+        }
+        int ans=INT_MAX;
+        for(int i=0;i<prev.size();i++){
+            ans=min(ans, prev[i]);
+        }
+        return ans;
+    }
+
     int minFallingPathSum(vector<vector<int>>& matrix) {
         int n=matrix.size();
 
@@ -70,11 +100,13 @@ public:
         // return ans;
 
 
-        int ans=INT_MAX;
-        vector<vector<int>>dp=tabulation(matrix);
-        for(int j=0;j<n;j++){
-            ans=min(ans, dp[0][j]);
-        }
-        return ans;
+        // int ans=INT_MAX;
+        // vector<vector<int>>dp=tabulation(matrix);
+        // for(int j=0;j<n;j++){
+        //     ans=min(ans, dp[0][j]);
+        // }
+        // return ans;
+
+        return sapceOpti(matrix);
     }
 };
