@@ -16,7 +16,17 @@ public:
         return dp[i]=ans;
     }
     int jump(vector<int>& nums) {
-        vector<int> dp(nums.size(), -1);
-        return f(0, nums, dp);
+        int n=nums.size();
+        vector<int> dp(n, 0);
+        dp[n-1]=0;
+        for(int i=n-2;i>=0;i--){
+            int ans=1e9;
+            for(int k=1;k<=nums[i];k++){
+                if(i+k<n)
+                ans=min(ans, 1+dp[i+k]);
+            }
+            dp[i]=ans;
+        }
+        return dp[0];
     }
 };
