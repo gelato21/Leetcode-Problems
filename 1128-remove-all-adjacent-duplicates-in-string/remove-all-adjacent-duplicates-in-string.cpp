@@ -4,13 +4,12 @@ public:
         stack<char> st;
         st.push(s[0]);
         for(int i=1;i<s.length();i++){
-            if(st.empty()==false && st.top()==s[i])
-            {
-                while(st.empty()==false && st.top()==s[i]){
-                    st.pop();
-                }
+            bool flag=true;
+            while(st.empty()==false && st.top()==s[i]){
+                st.pop();
+                flag=false;
             }
-            else{
+            if(flag){
                 st.push(s[i]);
             }
         }
