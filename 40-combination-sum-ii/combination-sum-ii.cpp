@@ -10,15 +10,12 @@ public:
         }
 
         //pick
-        bool flag=true;
         if(arr[i]<=target){
-            flag=false;
             subset.push_back(arr[i]);
             f(i+1, subset, arr, ans, target-arr[i]);
             subset.pop_back();
         }
         // notpick
-        if(flag==false)
         while(i+1<arr.size() && arr[i]==arr[i+1]) i++;
         f(i+1, subset, arr, ans, target);
     }
