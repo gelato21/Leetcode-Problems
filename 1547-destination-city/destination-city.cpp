@@ -2,15 +2,12 @@ class Solution {
 public:
     string destCity(vector<vector<string>>& paths) {
         unordered_map<string, int> mp;
-        for(vector<string> it: paths){
-            string source=it[0];
-            string desti=it[1];
-            // if(mp.find(source)==mp.end()){
-            //     mp[]
-            // }
-            mp[source]++;
-            if(mp.find(desti)==mp.end()){
-                mp[desti]=0;
+        for(vector<string> path: paths){
+            string src=path[0];
+            string dst=path[1];
+            mp[src]++;
+            if(mp.find(dst)==mp.end()){
+                mp[dst]=0;
             }
             
         }
