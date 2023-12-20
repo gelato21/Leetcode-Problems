@@ -13,10 +13,14 @@ public:
                    min_closest=curr_closest;
                    ans=(nums[i]+nums[low]+nums[high]);
                }
-               if(nums[i]+nums[low]+nums[high]<=target){
+               if(nums[i]+nums[low]+nums[high]<target){
                    low++;
                }
-               else high--;
+               else if(nums[i]+nums[low]+nums[high]>target){
+                   high--;
+               }
+
+               else return target;
            }
        } 
        return ans;
