@@ -24,6 +24,7 @@ public:
 
             for(auto &child: graph[node]){
                 int weight=child.second, node2=child.first;
+                if(minPath.find(node2)==minPath.end())
                 minHeap.push({d+weight, node2});
             }
         }
