@@ -1,26 +1,28 @@
 class Solution {
 public:
-    int f(int ind, vector<int>& nums, int isIndexFirstTaken, vector<vector<int>>& dp){
-        if(ind==nums.size()-1){
-            if(isIndexFirstTaken==true){
-                return 0;
-            }else{
-                return nums[ind];
-            }
-        }
-        if(ind>=nums.size()){
+    int maxProfit(int ind, vector<int>& arr, vector<int>& dp){
+        if(ind>=arr.size()){
             return 0;
         }
+        if(dp[ind]!=-1) return dp[ind];
 
-        if(dp[ind][isIndexFirstTaken]!=-1) return dp[ind][isIndexFirstTaken];
+        int pick = arr[ind] + maxProfit(ind+2, arr, dp);
+        int notPick = maxProfit(ind+1, arr, dp);
 
-        int pick = nums[ind]+f(ind+2, nums, ind==0 ? true: isIndexFirstTaken, dp);
-        int notPick = f(ind+1, nums, isIndexFirstTaken, dp);
-
-        return dp[ind][isIndexFirstTaken]=max(pick, notPick);
+        return dp[ind] = max(pick, notPick);
     }
     int rob(vector<int>& nums) {
-        vector<vector<int>> dp(nums.size()+1, vector<int>(2, -1));
-        return f(0, nums, false, dp);
+        int n = nums.size();
+        if(n==1) return nums[0];
+        vector<int> includeFirst(n-1), notFirst(n-1);
+        for(int i=0;i<n-1;i++){
+            includeFirst[i]=nums[i];
+            notFirst[i]=nums[i+1];
+        }
+        vector<int> dp(n+1, -1);
+        int ans1 = maxProfit(0, includeFirst, dp);
+        fill(dp.begin(), dp.end(), -1);
+        int ans2 = maxProfit(0, notFirst, dp);
+        return max(ans1, ans2);
     }
 };
