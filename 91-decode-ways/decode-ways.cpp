@@ -1,36 +1,42 @@
 class Solution {
 public:
-    int numDecodings(string s) {
-        int n=s.length();
-        vector<int> dp(n, 0);
-        if(s[0]!='0')
-        dp[0]=1;
-        for(int i=1;i<n;i++){
-            int num = s[i]-'0';
-            int prev = s[i-1]-'0';
-            if(num == 0 && prev==0){
-                dp[i]=0;
-            }else if(num==0 && prev!=0){
-                if(prev*10+num<=26){
-                    if(i-2>=0){
-                        dp[i]=dp[i-2];
-                    }else dp[i]=1;
-                }
+    int numberOfWays(int ind, string s, int n, vector<int>& dp){
+        if(ind>=n){
+            return 1;
+        }
+
+        if(dp[ind]!=-1) return dp[ind];
+
+        int first = 0, withSecond = 0;
+        if(s[ind] == '0'){
+            return 0;
+        }
+        first = numberOfWays(ind+1, s, n, dp);
+        if(ind+1<n){
+            if(s[ind]=='1'){
+                withSecond = numberOfWays(ind+2, s, n, dp);
             }
-            else if(num!=0 && prev==0){
-                dp[i]=dp[i-1];
-            }else{
-                if(prev*10+num <=26){
-                    if(i-2>=0)
-                    dp[i]=dp[i-1]+dp[i-2];
-                    else dp[i]=dp[i-1]+1;
-                }else{
-                    dp[i]=dp[i-1];
-                }
-                
+            else if(s[ind]=='2' && s[ind+1]<='6' && s[ind+1]>='0'){
+                withSecond = numberOfWays(ind+2, s, n, dp);
             }
         }
-        return dp[n-1];
+
+        return dp[ind] = first+withSecond;
 
     }
+    int numDecodings(string s) {
+        int n=s.length();
+        vector<int> dp(n+1, -1);
+        return numberOfWays(0, s, n, dp);
+
+    }
+
+     // we have 2 different ways to choose number
+        // 1. choose first(alone) 
+        // 2. chosse with next (pair) 
+        //     for choosing this we have some corner case
+        //     currIndexNumber == 1 or 2
+        //      if(currIndexNumber === 1) second number any thig [0, 9]
+        //      if(currIndexNumber === 2) second number must be [0, 6]
+        // if(we get === 0 ) retur 0; not possible
 };
